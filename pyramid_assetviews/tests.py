@@ -1,5 +1,6 @@
-from pyramid import testing
 import unittest
+from pyramid import testing
+
 
 class TestAssetViewConfig(unittest.TestCase):
 
@@ -16,11 +17,11 @@ class TestAssetViewConfig(unittest.TestCase):
         del self.config
 
     def test_config(self):
-        self.assertIsNotNone(self.config)
+        self.assertTrue(self.config is not None)
 
     def test_directive_added(self):
         self.config.include("pyramid_assetviews")
-        self.assertIsNotNone(self.config.add_asset_views)
+        self.assertTrue(self.config.add_asset_views is not None)
 
 
 class TestAssetView(unittest.TestCase):
@@ -56,7 +57,7 @@ class TestAssetView(unittest.TestCase):
         filenames = ['badmimetype.xyz']
         add_asset_views(self.config, asset_spec, *filenames)
 
-    def test_simple_response(self):
+    def test_simple_response__init__(self):
         from pyramid_assetviews import SimpleResponse
         response = SimpleResponse('body', 'image/x-icon')
         self.assertEqual(response.content_type, 'image/x-icon')
@@ -64,3 +65,13 @@ class TestAssetView(unittest.TestCase):
         self.assertEqual(response.status, '200 OK')
         self.assertEqual(response.headerlist, [('Content-Type', 'image/x-icon'),
                                                ('Content-Length', '4')])
+                                               
+    def test_simple_response__call__(self):
+        from pyramid_assetviews import SimpleResponse
+        response = SimpleResponse('body', 'image/x-icon')
+        
+        def start_response(status, headerlist):
+            return status, headerlist
+            
+        app_iter = response({}, start_response)
+        self.assertEqual(app_iter, ['body'])
