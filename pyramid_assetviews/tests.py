@@ -1,7 +1,6 @@
 import unittest
 from pyramid import testing
 
-
 class TestAssetViewConfig(unittest.TestCase):
 
     def setUp(self):
@@ -51,10 +50,10 @@ class TestAssetView(unittest.TestCase):
         filenames = ['favicon.ico', 'crossdomain.xml', 'robots.txt']
         add_asset_views(self.config, asset_spec, *filenames)
 
-    def test_add_asset_views_with_bad_mimetype(self):
+    def test_add_asset_views_with_no_mimetype(self):
         from pyramid_assetviews import add_asset_views
         asset_spec = 'pyramid_assetviews:test_assets'
-        filenames = ['badmimetype.xyz']
+        filenames = ['nomimetype']
         add_asset_views(self.config, asset_spec, *filenames)
 
     def test_simple_response__init__(self):
