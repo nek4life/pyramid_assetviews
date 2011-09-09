@@ -16,11 +16,12 @@ class TestAssetViewConfig(unittest.TestCase):
         del self.config
 
     def test_config(self):
-        self.assertNotEqual(self.config, None)
+        self.assertIsNotNone(self.config)
 
     def test_directive_added(self):
         self.config.include("pyramid_assetviews")
-        self.assertNotEqual(self.config.add_asset_views, None)
+        self.assertIsNotNone(self.config.add_asset_views)
+
 
 class TestAssetView(unittest.TestCase):
 
