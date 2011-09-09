@@ -1,0 +1,11 @@
+*.idea/
+*.iml
+*.project
+*.egg-info/
+*.swp
+*.pyc
+*.pyo
+*.DS_Store
+*.coverage
+/build
+/dist
