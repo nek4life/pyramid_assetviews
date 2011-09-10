@@ -8,7 +8,7 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'pyramid>=1.2b2',
+    'pyramid',
     'zope.interface'
     ]
 
@@ -24,7 +24,7 @@ setup(name='pyramid_assetviews',
         ],
       author='Charlie Choiniere',
       author_email='pylons-discuss@googlegroups.com',
-      url='',
+      url='https://github.com/nek4life/pyramid_assetviews',
       keywords='pyramid',
       packages=find_packages(),
       include_package_data=True,
