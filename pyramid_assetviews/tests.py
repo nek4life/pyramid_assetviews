@@ -45,7 +45,7 @@ class TestAssetView(unittest.TestCase):
 
     def test_asset_view_factory(self):
         from pyramid_assetviews import asset_view_factory
-        asset_view = asset_view_factory("body", "image/x-icon", 124432, cache_max_age=500)
+        asset_view = asset_view_factory("body", "image/x-icon", 124432, http_cache=500)
         response = asset_view("context", self.request)
         self.assertEqual(response.app_iter, ['body'])
         self.assertEqual(response.content_type, 'image/x-icon')
@@ -59,10 +59,10 @@ class TestAssetView(unittest.TestCase):
         filenames = ['favicon.ico', 'crossdomain.xml', 'robots.txt']
         add_asset_views(self.config, asset_spec, filenames=filenames)
         add_asset_views(self.config, asset_spec, 'robots.txt')
-        add_asset_views(self.config, asset_spec, 'robots.txt', cache_max_age=500)
+        add_asset_views(self.config, asset_spec, 'robots.txt', http_cache=500)
 
     def test_add_asset_views_with_no_mimetype(self):
         from pyramid_assetviews import add_asset_views
         asset_spec = 'pyramid_assetviews:test_assets'
         filenames = ['nomimetype']
-        add_asset_views(self.config, asset_spec, *filenames)
+        add_asset_views(self.config, asset_spec, filenames=filenames)
