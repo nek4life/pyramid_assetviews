@@ -51,14 +51,30 @@ by using this new directive.  For example:
        config = Configurator(settings=settings)
        config.include("pyramid_assetviews")
        
-       # Adding your Root-Relative asset
-       config.add_asset_views("my_module:static", 'robots.txt', 'favicon.ico')
+       # Adding a single Root-Relative asset
+       config.add_asset_views("my_module:static", 'robots.txt')
        
-       # Adding assets using argument expansion
+       # Adding multiple assets using the filenames argument.
        filenames = ['robots.txt', 'humans.txt', 'crossdomain.xml', 'favicon.ico']
-       config.add_asset_views("my_module:static", *filenames)
+       config.add_asset_views("my_module:static", filenames=filenames)
+         
+Optionally you may use the ``http_cache`` argument to specify the time in seconds
+that the file should remained cached.  If you need to specify cache settings
+per file you will have to call ``add_asset_views`` multiple times instead of
+using the ``filenames`` argument.
+
+.. code-block:: python
+   :linenos:
+   
+   def main(global_config, **settings):
+       config = Configurator(settings=settings)
+       config.include("pyramid_assetviews")
        
-The first argument uses the pyramid
-`asset specification <https://pylonsproject.org/projects/pyramid/dev/narr/assets.html#understanding-asset-specifications>`_
-to derive the location of the static files that will be served from the root
-of the application.  The second argument ``*args`` takes unlimited filename arguments.
+       # Adding your Root-Relative asset with http_cache
+       config.add_asset_views("my_module:static", 'robots.txt', http_cache=5000)
+       config.add_asset_views("my_module:static", 'humans.txt', http_cache=3000)
+       
+       # All files in the filenames list would have the same http_cache value
+       filenames = ['robots.txt', 'humans.txt', 'crossdomain.xml', 'favicon.ico']
+       config.add_asset_views("my_module:static", filenames=filenames, http_cache=5000)
+
