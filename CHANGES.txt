@@ -1,3 +1,16 @@
+1.0a2
+---
+
+- Updated the add_asset_view methods method signature to accept a filename or
+  list of filenames instead of using *names as a catch all.
+
+- Added http_cache setting that addes Cache-Control: max-age and Expires headers.
+  http_cache accepts time in seconds.  For example: http_cache=5000
+
+- Dropped zope.interface dependency and picked up a webob dependency instead.
+
+- Added License Information
+
 1.0a1
 ---
 
