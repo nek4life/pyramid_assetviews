@@ -37,40 +37,32 @@ class TestAssetView(unittest.TestCase):
         testing.tearDown()
         del self.config
 
+    def test_no_filenames_exception(self):
+        from pyramid_assetviews import add_asset_views
+        from pyramid_assetviews import NoFilenamesProvided
+        with self.assertRaises(NoFilenamesProvided):
+            add_asset_views(self.config, 'pyramid_assetviews:test_assets')
+
     def test_asset_view_factory(self):
         from pyramid_assetviews import asset_view_factory
-        asset_view = asset_view_factory("body", "image/x-icon")
+        asset_view = asset_view_factory("body", "image/x-icon", 124432, cache_max_age=500)
         response = asset_view("context", self.request)
         self.assertEqual(response.app_iter, ['body'])
         self.assertEqual(response.content_type, 'image/x-icon')
+        self.assertTrue(response.last_modified is not None)
+        self.assertTrue(response.expires is not None)
+        self.assertTrue(response.cache_control.max_age, 500)
 
     def test_add_asset_views(self):
         from pyramid_assetviews import add_asset_views
         asset_spec = 'pyramid_assetviews:test_assets'
         filenames = ['favicon.ico', 'crossdomain.xml', 'robots.txt']
-        add_asset_views(self.config, asset_spec, *filenames)
+        add_asset_views(self.config, asset_spec, filenames=filenames)
+        add_asset_views(self.config, asset_spec, 'robots.txt')
+        add_asset_views(self.config, asset_spec, 'robots.txt', cache_max_age=500)
 
     def test_add_asset_views_with_no_mimetype(self):
         from pyramid_assetviews import add_asset_views
         asset_spec = 'pyramid_assetviews:test_assets'
         filenames = ['nomimetype']
         add_asset_views(self.config, asset_spec, *filenames)
-
-    def test_simple_response__init__(self):
-        from pyramid_assetviews import SimpleResponse
-        response = SimpleResponse('body', 'image/x-icon')
-        self.assertEqual(response.content_type, 'image/x-icon')
-        self.assertEqual(response.app_iter, ['body'])
-        self.assertEqual(response.status, '200 OK')
-        self.assertEqual(response.headerlist, [('Content-Type', 'image/x-icon'),
-                                               ('Content-Length', '4')])
-                                               
-    def test_simple_response__call__(self):
-        from pyramid_assetviews import SimpleResponse
-        response = SimpleResponse('body', 'image/x-icon')
-        
-        def start_response(status, headerlist):
-            return status, headerlist
-            
-        app_iter = response({}, start_response)
-        self.assertEqual(app_iter, ['body'])

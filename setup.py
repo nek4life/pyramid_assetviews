@@ -9,14 +9,14 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'pyramid',
-    'zope.interface'
+    'webob',
     ]
 
 if sys.version_info[:3] < (2,5,0):
     requires.append('pysqlite')
 
 setup(name='pyramid_assetviews',
-      version='1.0a1',
+      version='1.0a2',
       description='pyramid_assetviews',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
